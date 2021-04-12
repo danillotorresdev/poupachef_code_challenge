@@ -19,7 +19,7 @@ export type Supplier = {
 };
 
 type SuppliersContextData = {
-  getSuppliers(): void;
+  getSuppliers(idToken: string): void;
   suppliers: Supplier[];
   editSuppliers({
     publicId,
@@ -45,29 +45,16 @@ const SuppliersContext = createContext<SuppliersContextData>(
 
 const SupplierProvider: React.FC = ({ children }) => {
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
-
   const token = localStorage.getItem('@Poupachef:token');
 
-  const getSuppliers = useCallback(async () => {
-    try {
-      let res;
-      if (token) {
-        res = await api.get('/suppliers', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-      }
-      if (res) {
-        setSuppliers(res.data);
-      }
-    } catch (err) {
-      if (err.response?.data.error === 'invalid_token') {
-        localStorage.removeItem('@Poupachef:token');
-        localStorage.removeItem('@Poupachef:user');
-      }
-    }
-  }, [token]);
+  const getSuppliers = useCallback(async (idToken) => {
+    const res = await api.get('/suppliers', {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    });
+    setSuppliers(res.data);
+  }, []);
 
   const editSuppliers = useCallback(
     async ({

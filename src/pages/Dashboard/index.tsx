@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useSupplier } from '../../contexts/suppliers';
+import { useAuth } from '../../contexts/auth';
+import { withRouter } from 'react-router-dom';
 
 import * as S from './styles';
 import Table from '../../components/Table';
@@ -8,11 +10,13 @@ import Header from '../../components/Header';
 const Dashboard: React.FC = () => {
   const { suppliers, getSuppliers } = useSupplier();
 
+  const token = localStorage.getItem('@Poupachef:token');
+
   useEffect(() => {
-    if (suppliers.length === 0) {
-      getSuppliers();
+    if (token) {
+      getSuppliers(token);
     }
-  }, [getSuppliers, suppliers]);
+  }, [getSuppliers, token, suppliers]);
 
   return (
     <>
@@ -25,4 +29,4 @@ const Dashboard: React.FC = () => {
   );
 };
 
-export default Dashboard;
+export default withRouter(Dashboard);
