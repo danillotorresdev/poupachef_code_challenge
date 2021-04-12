@@ -55,6 +55,13 @@ $ yarn
 $ yarn start
 ```
 
+```bash
+# To Signin
+user: danillo@poupachef.com
+pass: 12345
+postmanToken: You must get the token from the postman
+```
+
 ## 🤔 How to contribute
 
 **Make a fork of this repository**
